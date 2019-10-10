@@ -1,0 +1,36 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.25.0'
+    id 'com.jfrog.bintray' version '1.8.4' apply false
+}
+
+subprojects {
+    group = GROUP
+    version = VERSION_NAME
+
+    if (project.name.startsWith("hashing")) {
+        apply plugin: 'java-library'
+        apply from: '../gradle/publish.gradle'
+    } else {
+        apply plugin: 'java'
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    dependencies {
+        constraints {
+            testImplementation "org.junit.jupiter:junit-jupiter:5.5.2"
+        }
+    }
+}

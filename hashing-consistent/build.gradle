@@ -1,0 +1,4 @@
+dependencies {
+    api project(':hashing-api')
+    testImplementation "org.junit.jupiter:junit-jupiter"
+}

@@ -1,0 +1,5 @@
+rootProject.name = 'hashing-utils'
+
+include 'hashing-api'
+include 'hashing-consistent'
+include 'hashing-rendezvous'
