@@ -6,14 +6,9 @@ ext {
     bintrayKey = System.getProperty("BINTRAY_API_KEY")
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set('sources')
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set('javadoc')
-    from javadoc.destinationDir
+java {
+    publishJavadoc()
+    publishSources()
 }
 
 artifacts {
