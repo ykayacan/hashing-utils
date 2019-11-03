@@ -11,11 +11,6 @@ java {
     withSourcesJar()
 }
 
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
 publishing {
     publications {
         maven(MavenPublication) {

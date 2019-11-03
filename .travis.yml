@@ -7,7 +7,6 @@ git:
 
 stages:
   - name: test
-    if: type = pull_request
   - name: snapshot
     if: type = push AND branch = master AND tag IS blank
   - name: release
@@ -16,10 +15,10 @@ stages:
 jobs:
   include:
     - stage: test
-      jdk: openjdk8
-      script: ./gradlew check --no-daemon
-    - stage: test
-      jdk: openjdk11
+      jdk:
+        - openjdk8
+        - openjdk11
+        - openjdk13
       script: ./gradlew check --no-daemon
     - stage: snapshot
       jdk: openjdk8
@@ -27,12 +26,14 @@ jobs:
       deploy:
         - provider: script
           script: echo "Deploying"
+          skip_cleanup: false
     - stage: release
       jdk: openjdk8
       script: skip
       deploy:
         - provider: script
-          script: ./gradlew bintrayUpload -x test --no-daemon
+          script: ./gradlew bintrayUpload --no-daemon
+          skip_cleanup: true
           on:
             tags: true
 
