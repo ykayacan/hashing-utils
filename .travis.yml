@@ -12,13 +12,18 @@ stages:
   - name: release
     if: type = push AND tag IS present
 
+
+
 jobs:
   include:
     - stage: test
-      jdk:
-        - openjdk8
-        - openjdk11
-        - openjdk13
+      jdk: openjdk8
+      script: ./gradlew check --no-daemon
+    - stage: test
+      jdk: openjdk11
+      script: ./gradlew check --no-daemon
+    - stage: test
+      jdk: openjdk13
       script: ./gradlew check --no-daemon
     - stage: snapshot
       jdk: openjdk8
