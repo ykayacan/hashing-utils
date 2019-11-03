@@ -1,6 +1,6 @@
 # Hashing Utils
 
-[![Build Status](https://travis-ci.org/ykayacan/hashing-utils.svg?branch=master)](https://travis-ci.org/ykayacan/hashing-utils)
+[![Build Status](https://travis-ci.com/ykayacan/hashing-utils.svg?branch=master)](https://travis-ci.com/ykayacan/hashing-utils)
 
 ## Table of Contents
 + [About](#about)
@@ -114,7 +114,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
