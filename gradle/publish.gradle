@@ -7,8 +7,8 @@ ext {
 }
 
 java {
-    publishJavadoc()
-    publishSources()
+    withJavadocJar()
+    withSourcesJar()
 }
 
 artifacts {
@@ -20,8 +20,6 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            artifact sourcesJar
-            artifact javadocJar
 
             groupId project.group
             artifactId project.name
