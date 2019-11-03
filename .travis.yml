@@ -7,6 +7,7 @@ git:
 
 stages:
   - name: test
+    if: type = pull_request OR branch = master
   - name: snapshot
     if: type = push AND branch = master AND tag IS blank
   - name: release
@@ -15,10 +16,13 @@ stages:
 jobs:
   include:
     - stage: test
-      jdk:
-        - openjdk8
-        - openjdk11
-        - openjdk13
+      jdk: openjdk8
+      script: ./gradlew check --no-daemon
+    - stage: test
+      jdk: openjdk11
+      script: ./gradlew check --no-daemon
+    - stage: test
+      jdk: openjdk13
       script: ./gradlew check --no-daemon
     - stage: snapshot
       jdk: openjdk8
