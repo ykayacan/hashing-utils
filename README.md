@@ -14,46 +14,106 @@ A basic Java implementation of [Consistent Hashing](https://en.wikipedia.org/wik
 
 ## Getting Started <a name = "getting_started"></a>
 
-### Installing
+### Latest Stable Releases
 
 #### Gradle
 
-Add dependencies to `build.gradle`:
-
 ```groovy
 repositories {
-    maven {
-        url  "https://dl.bintray.com/ykayacan/hashing-utils"
-    }
+  jcenter()
 }
 
 dependencies {
-  implementation 'com.ykayacan.hashing:hashing-api:LATEST_VERSION'
-  // add one of them
-  implementation 'com.ykayacan.hashing:hashing-consistent:LATEST_VERSION'
-  implementation 'com.ykayacan.hashing:hashing-rendezvous:LATEST_VERSION'
+  implementation 'io.github.ykayacan.hashing:hashing-api:1.0.0'
+
+  implementation 'io.github.ykayacan.hashing:hashing-consistent:1.0.0'
+
+  implementation 'io.github.ykayacan.hashing:hashing-rendezvous:1.0.0'
 }
 ```
+
 #### Maven
 
-In a Maven project, include the artifacts in the dependencies section of your `pom.xml`:
-
 ```xml
+<repositories>
+  <repository>
+    <id>jcenter</id>
+    <url>https://jcenter.bintray.com</url>
+  </repository>
+</repositories>
+
 <dependencies>
   <dependency>
-    <groupId>com.ykayacan.hashing</groupId>
+    <groupId>io.github.ykayacan.hashing</groupId>
     <artifactId>hashing-api</artifactId>
-    <version>LATEST_VERSION</version>
+    <version>1.0.0</version>
   </dependency>
+
   <dependency>
-    <groupId>com.ykayacan.hashing</groupId>
+    <groupId>io.github.ykayacan.hashing</groupId>
     <artifactId>hashing-consistent</artifactId>
-    <version>LATEST_VERSION</version>
+    <version>1.0.0</version>
   </dependency>
+
   <dependency>
-    <groupId>com.ykayacan.hashing</groupId>
+    <groupId>io.github.ykayacan.hashing</groupId>
     <artifactId>hashing-rendezvous</artifactId>
-    <version>LATEST_VERSION</version>
+    <version>1.0.0</version>
+  </dependency>
+</dependencies>
+```
+
+### Snapshots
+
+You can access the latest snapshot by adding "-SNAPSHOT" to the version number and
+adding the repository `https://oss.jfrog.org/artifactory/oss-snapshot-local`
+to your build.
+
+#### Gradle
+
+```groovy
+repositories {
+  maven {
+    url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+  }
+}
+
+dependencies {
+  implementation 'io.github.ykayacan.hashing:hashing-api:1.0.0-SNAPSHOT'
+
+  implementation 'io.github.ykayacan.hashing:hashing-consistent:1.0.0-SNAPSHOT'
+
+  implementation 'io.github.ykayacan.hashing:hashing-rendezvous:1.0.0-SNAPSHOT'
+}
+```
+
+#### Maven
+
+```xml
+<repositories>
+  <repository>
+    <id>oss-snapshot-local</id>
+    <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+  </repository>
+</repositories>
+
+<dependencies>
+  <dependency>
+    <groupId>io.github.ykayacan.hashing</groupId>
+    <artifactId>hashing-api</artifactId>
+    <version>1.0.0</version>
+  </dependency>
+
+  <dependency>
+    <groupId>io.github.ykayacan.hashing</groupId>
+    <artifactId>hashing-consistent</artifactId>
+    <version>1.0.0</version>
+  </dependency>
+
+  <dependency>
+    <groupId>io.github.ykayacan.hashing</groupId>
+    <artifactId>hashing-rendezvous</artifactId>
+    <version>1.0.0</version>
   </dependency>
 </dependencies>
 ```
@@ -62,12 +122,10 @@ In a Maven project, include the artifacts in the dependencies section of your `p
 
 #### Consistent Hashing
 
-```java
-NodeRouter<PhysicalNode> router = ConsistentNodeRouter.create(MurMurHashFunction.create());
+```
+NodeRouter<PhysicalNode> router = ConsistentNodeRouter.create(15, MurMurHashFunction.create());
 
-List<PhysicalNode> initialNodes = Arrays.asList(
-    PhysicalNode.newBuilder().nodeId("node1").virtualNodeCount(15).build(),
-    PhysicalNode.newBuilder().nodeId("node2").virtualNodeCount(15).build());
+List<PhysicalNode> initialNodes = Arrays.asList(PhysicalNode.of("node1"),PhysicalNode.of("node2"));
 
 router.addNodes(initialNodes);
 
@@ -75,8 +133,7 @@ router.addNodes(initialNodes);
 Optional<PhysicalNode> nodeOpt = router.getNode("node1");
 
 // add
-Node node3 = PhysicalNode.newBuilder().nodeId("node3").virtualNodeCount(15).build();
-router.addNode(node3);
+router.addNode(PhysicalNode.of("node3"));
 
 // remove
 router.removeNode("node1");
@@ -84,13 +141,11 @@ router.removeNode("node1");
 
 #### Rendezvous Hashing
 
-```java
+```
 NodeRouter<WeightedNode> router = RendezvousNodeRouter.create(
     MurMurHashFunction.create(), DefaultRendezvousStrategy.create());
 
-List<WeightedNode> initialNodes = Arrays.asList(
-    WeightedNode.newBuilder().nodeId("node1").build(),
-    WeightedNode.newBuilder().nodeId("node2").build());
+List<WeightedNode> initialNodes = Arrays.asList(WeightedNode.of("node1"), WeightedNode.of("node2"));
 
 router.addNodes(initialNodes);
 
@@ -98,8 +153,7 @@ router.addNodes(initialNodes);
 Optional<WeightedNode> nodeOpt = router.getNode("node1");
 
 // add
-Node node3 = WeightedNode.newBuilder().nodeId("node3").build();
-router.addNode(node3);
+router.addNode(WeightedNode.of("node3"));
 
 // remove
 router.removeNode("node1");

@@ -1,0 +1,103 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.jfrog.artifactory'
+
+def isSnapshotBuild() {
+    return Boolean.valueOf(System.getProperty("snapshot"))
+}
+
+group = property('GROUP')
+version = property('VERSION_NAME') + (isSnapshotBuild() ? "-SNAPSHOT" : "")
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            pom {
+                name = project.name
+                description = property('POM_DESCRIPTION')
+                url = property('POM_URL')
+                licenses {
+                    license {
+                        name = property('POM_LICENCE_NAME')
+                        url = property('POM_LICENCE_URL')
+                    }
+                }
+                developers {
+                    developer {
+                        id = property('POM_DEVELOPER_ID')
+                        name = property('POM_DEVELOPER_NAME')
+                    }
+                }
+                scm {
+                    url = property('POM_SCM_URL')
+                    connection = property('POM_SCM_CONNECTION')
+                    developerConnection = property('POM_SCM_DEV_CONNECTION')
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = 'https://oss.jfrog.org'
+            credentials {
+                username System.getenv('BINTRAY_USER')
+                password System.getenv('BINTRAY_KEY')
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['maven']
+    publish = property('BINTRAY_PUBLISH')
+    pkg {
+        repo = property('BINTRAY_PKG_REPO')
+        name = project.name
+        licenses = property('BINTRAY_PKG_LICENSES').split(',')
+        websiteUrl = property('BINTRAY_PKG_WEBSITE_URL')
+        issueTrackerUrl = property('BINTRAY_PKG_ISSUE_TRACKER_URL')
+        vcsUrl = property('BINTRAY_PKG_VCS_URL')
+        publicDownloadNumbers = property('BINTRAY_PKG_PUBLIC_DOWNLOAD_NUMBERS')
+        githubRepo = property('BINTRAY_PKG_GITHUB_REPO')
+        labels = property('BINTRAY_PKG_LABELS').split(',')
+        version {
+            name = project.version
+            desc = project.description
+            vcsTag = project.version
+        }
+    }
+}
+
+artifactory {
+    contextUrl = 'https://oss.jfrog.org/artifactory'
+    publish {
+        repository {
+            repoKey = 'oss-snapshot-local'
+            username = System.getenv('BINTRAY_USER')
+            password = System.getenv('BINTRAY_KEY')
+        }
+        defaults {
+            publications('maven')
+            publishArtifacts = true
+            publishPom = true
+        }
+    }
+    resolve {
+        repoKey = 'jcenter'
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}

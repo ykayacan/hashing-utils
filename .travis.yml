@@ -7,6 +7,7 @@ git:
 
 stages:
   - name: test
+    if: type = pull_request OR branch = master
   - name: snapshot
     if: type = push AND branch = master AND tag IS blank
   - name: release
@@ -27,20 +28,10 @@ jobs:
       script: ./gradlew check --no-daemon
     - stage: snapshot
       jdk: openjdk8
-      script: skip
-      deploy:
-        - provider: script
-          script: echo "Deploying"
-          skip_cleanup: false
+      script: ./gradlew artifactoryPublish --no-daemon -Dsnapshot=true
     - stage: release
       jdk: openjdk8
-      script: skip
-      deploy:
-        - provider: script
-          script: ./gradlew bintrayUpload --no-daemon
-          skip_cleanup: true
-          on:
-            tags: true
+      script: ./gradlew bintrayUpload --no-daemon
 
 notifications:
   email: false
