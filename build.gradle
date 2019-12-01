@@ -1,18 +1,12 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.27.0'
     id 'com.jfrog.bintray' version '1.8.4' apply false
+    id 'com.jfrog.artifactory' version '4.11.0' apply false
 }
 
-subprojects {
-    group = GROUP
-    version = VERSION_NAME
-
-    if (project.name.startsWith("hashing")) {
-        apply plugin: 'java-library'
-        apply from: '../gradle/publish.gradle'
-    } else {
-        apply plugin: 'java'
-    }
+subprojects { project ->
+    apply plugin: 'java-library'
+    apply from: '../gradle/bintray-publish.gradle'
 
     repositories {
         jcenter()
@@ -24,13 +18,14 @@ subprojects {
     test {
         useJUnitPlatform()
         testLogging {
-            events("passed", "skipped", "failed")
+            events('passed', 'skipped', 'failed')
         }
     }
 
     dependencies {
         constraints {
-            testImplementation "org.junit.jupiter:junit-jupiter:5.6.0-M1"
+            implementation 'org.checkerframework:checker:3.0.0'
+            testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0-M1'
         }
     }
 }
