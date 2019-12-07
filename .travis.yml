@@ -13,8 +13,6 @@ stages:
   - name: release
     if: type = push AND tag IS present
 
-
-
 jobs:
   include:
     - stage: test
