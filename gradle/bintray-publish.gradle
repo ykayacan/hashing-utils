@@ -1,13 +1,14 @@
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.jfrog.artifactory'
-
-def isSnapshotBuild() {
-    return Boolean.valueOf(System.getProperty("snapshot"))
-}
+apply plugin: 'io.wusa.semver-git-plugin'
 
 group = property('GROUP')
-version = property('VERSION_NAME') + (isSnapshotBuild() ? "-SNAPSHOT" : "")
+version = semver.info.version
+
+semver {
+    snapshotSuffix = "<count>.g<sha><dirty>-SNAPSHOT"
+}
 
 java {
     withJavadocJar()
@@ -72,7 +73,8 @@ bintray {
         version {
             name = project.version
             desc = project.description
-            vcsTag = project.version
+            vcsTag = "v" + project.version
+            released = new Date()
         }
     }
 }

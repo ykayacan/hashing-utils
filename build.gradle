@@ -2,6 +2,7 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.27.0'
     id 'com.jfrog.bintray' version '1.8.4' apply false
     id 'com.jfrog.artifactory' version '4.11.0' apply false
+    id 'io.wusa.semver-git-plugin' version '1.2.0' apply false
 }
 
 subprojects { project ->

@@ -7,36 +7,33 @@ git:
 
 stages:
   - name: test
-    if: type = pull_request OR branch = master
   - name: snapshot
-    if: type = push AND branch = master AND tag IS blank
+    if: branch = master AND tag IS blank
   - name: release
-    if: type = push AND tag IS present
+    if: branch = master AND tag IS present
 
 jobs:
   include:
     - stage: test
       jdk: openjdk8
       script: ./gradlew check --no-daemon
-    - stage: test
-      jdk: openjdk11
-      script: ./gradlew check --no-daemon
-    - stage: test
-      jdk: openjdk13
-      script: ./gradlew check --no-daemon
     - stage: snapshot
       jdk: openjdk8
-      script: ./gradlew artifactoryPublish --no-daemon -Dsnapshot=true
+      deploy:
+        provider: script
+        script: ./gradlew artifactoryPublish -x test --no-daemon
     - stage: release
       jdk: openjdk8
-      script: ./gradlew bintrayUpload --no-daemon
+      deploy:
+        provider: script
+        script: ./gradlew bintrayUpload -x test --no-daemon
 
 notifications:
   email: false
 
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -rf $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
