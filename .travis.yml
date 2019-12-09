@@ -19,11 +19,13 @@ jobs:
       script: ./gradlew check --no-daemon
     - stage: snapshot
       jdk: openjdk8
+      script: skip
       deploy:
         provider: script
         script: ./gradlew artifactoryPublish -x test --no-daemon
     - stage: release
       jdk: openjdk8
+      script: skip
       deploy:
         provider: script
         script: ./gradlew bintrayUpload -x test --no-daemon

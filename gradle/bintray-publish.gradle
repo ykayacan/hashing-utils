@@ -4,11 +4,7 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'io.wusa.semver-git-plugin'
 
 group = property('GROUP')
-version = semver.info.version
-
-semver {
-    snapshotSuffix = "<count>.g<sha><dirty>-SNAPSHOT"
-}
+version = semver.info
 
 java {
     withJavadocJar()
