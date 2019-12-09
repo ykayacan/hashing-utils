@@ -46,19 +46,19 @@ dependencies {
   <dependency>
     <groupId>io.github.ykayacan.hashing</groupId>
     <artifactId>hashing-api</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
   </dependency>
 
   <dependency>
     <groupId>io.github.ykayacan.hashing</groupId>
     <artifactId>hashing-consistent</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
   </dependency>
 
   <dependency>
     <groupId>io.github.ykayacan.hashing</groupId>
     <artifactId>hashing-rendezvous</artifactId>
-    <version>1.0.0</version>
+    <version>0.1.0</version>
   </dependency>
 </dependencies>
 ```
@@ -79,11 +79,11 @@ repositories {
 }
 
 dependencies {
-  implementation 'io.github.ykayacan.hashing:hashing-api:1.0.0-SNAPSHOT'
+  implementation 'io.github.ykayacan.hashing:hashing-api:0.1.0-SNAPSHOT'
 
-  implementation 'io.github.ykayacan.hashing:hashing-consistent:1.0.0-SNAPSHOT'
+  implementation 'io.github.ykayacan.hashing:hashing-consistent:0.1.0-SNAPSHOT'
 
-  implementation 'io.github.ykayacan.hashing:hashing-rendezvous:1.0.0-SNAPSHOT'
+  implementation 'io.github.ykayacan.hashing:hashing-rendezvous:0.1.0-SNAPSHOT'
 }
 ```
 
