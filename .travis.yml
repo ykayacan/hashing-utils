@@ -29,6 +29,8 @@ jobs:
       deploy:
         provider: script
         script: ./gradlew bintrayUpload -x test --no-daemon
+        on:
+          tags: true
 
 notifications:
   email: false
