@@ -3,8 +3,12 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'io.wusa.semver-git-plugin'
 
+semver {
+    nextVersion = "none"
+}
+
 group = property('GROUP')
-version = semver.info
+version = semver.info.version
 
 java {
     withJavadocJar()
