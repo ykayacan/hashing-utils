@@ -38,8 +38,8 @@ public class WeightedRendezvousStrategy<N extends WeightedNode> implements Rende
     return (hash & FTO) / FTZ;
   }
 
-  private static double computeWeightedScore(WeightedNode node, HashFunction hashFunction) {
-    long hash = hashFunction.hash(node.getNodeId());
+  private static double computeWeightedScore(String key, WeightedNode node, HashFunction hashFunction) {
+    long hash = hashFunction.hash(key + node.getNodeId());
     double score = 1.0 / -Math.log(toDouble(hash));
     return node.getWeight() * score;
   }
@@ -67,7 +67,7 @@ public class WeightedRendezvousStrategy<N extends WeightedNode> implements Rende
     double highestScore = -1;
     N champion = null;
     for (N node : ring) {
-      double score = computeWeightedScore(node, hashFunction);
+      double score = computeWeightedScore(key, node, hashFunction);
       if (score > highestScore) {
         champion = node;
         highestScore = score;
