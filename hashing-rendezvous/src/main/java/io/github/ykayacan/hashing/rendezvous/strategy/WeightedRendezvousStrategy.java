@@ -29,7 +29,7 @@ import java.util.Optional;
  */
 public class WeightedRendezvousStrategy<N extends WeightedNode> implements RendezvousStrategy<N> {
 
-  private static final long FTO = (0xFF_FF_FF_FF_FF_FF_FF_FFL >> (64 - 53));
+  private static final long FTO = (0xFF_FF_FF_FF_FF_FF_FF_FFL >>> (64 - 53));
   private static final double FTZ = (double) (1L << 53);
 
   private WeightedRendezvousStrategy() {}
