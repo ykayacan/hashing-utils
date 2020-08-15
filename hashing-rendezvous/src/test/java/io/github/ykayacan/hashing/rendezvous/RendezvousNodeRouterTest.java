@@ -23,13 +23,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.ykayacan.hashing.api.NodeRouter;
 import io.github.ykayacan.hashing.rendezvous.strategy.DefaultRendezvousStrategy;
+import io.github.ykayacan.hashing.rendezvous.strategy.WeightedRendezvousStrategy;
 import io.github.ykayacan.hashing.rendezvous.util.StreamUtil;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
+
+import org.checkerframework.com.google.common.hash.Hashing;
 import org.junit.jupiter.api.Test;
 
 class RendezvousNodeRouterTest {
@@ -113,6 +118,24 @@ class RendezvousNodeRouterTest {
         .forEach(router2::addNode);
 
     assertEquals(router2.getNode("key"), router1.getNode("key"));
+  }
+
+  @Test
+  void shouldUseAllGivenNodes() {
+    NodeRouter<WeightedNode> router = RendezvousNodeRouter.create(
+            s -> Hashing.murmur3_128().hashString(s, StandardCharsets.UTF_8).asLong(),
+            WeightedRendezvousStrategy.create());
+
+    for (int i = 0; i < 100; i++) {
+      router.addNode(WeightedNode.newBuilder(String.valueOf(i)).weight(5).build());
+    }
+
+    Set<WeightedNode> selected = new HashSet();
+    for (int i = 0; i < 100000; i++) {
+      selected.add(router.getNode(String.valueOf(i)).get());
+    }
+
+    assertEquals(selected.size(), 100);
   }
 
   private NodeRouter<WeightedNode> createRendezvousRouter() {
