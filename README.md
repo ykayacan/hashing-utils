@@ -1,32 +1,31 @@
 # Hashing Utils
 
-[![Build Status](https://travis-ci.com/ykayacan/hashing-utils.svg?branch=master)](https://travis-ci.com/ykayacan/hashing-utils)
+![Publish Release](https://github.com/ykayacan/hashing-utils/workflows/Publish%20Release/badge.svg)
+![Publish Snapshot](https://github.com/ykayacan/hashing-utils/workflows/Publish%20Snapshot/badge.svg?branch=master)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/ykayacan/hashing-utils)
 ![GitHub](https://img.shields.io/github/license/ykayacan/hashing-utils)
 
 ## Table of Contents
+
 + [About](#about)
 + [Getting Started](#getting_started)
 + [Usage](#usage)
 + [Contributing](CONTRIBUTING.md)
 
 ## About <a name = "about"></a>
+
 A basic Java implementation of [Consistent Hashing](https://en.wikipedia.org/wiki/Consistent_hashing), 
 [Rendezvous Hashing](https://en.wikipedia.org/wiki/Rendezvous_hashing) and Weighted Rendezvous Hashing.
 
 ## Getting Started <a name = "getting_started"></a>
 
 ### Latest Stable Releases
-![Bintray](https://img.shields.io/bintray/v/ykayacan/hashing-utils/hashing-api?label=hashing-api)
-![Bintray](https://img.shields.io/bintray/v/ykayacan/hashing-utils/hashing-consistent?label=hashing-consistent)
-![Bintray](https://img.shields.io/bintray/v/ykayacan/hashing-utils/hashing-rendezvous?label=hashing-rendezvous)
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/ykayacan/hashing-utils)
 
 #### Gradle
 
 ```groovy
-repositories {
-  jcenter()
-}
-
 dependencies {
   implementation 'io.github.ykayacan.hashing:hashing-api:LATEST_VERSION'
   implementation 'io.github.ykayacan.hashing:hashing-consistent:LATEST_VERSION'
@@ -37,13 +36,6 @@ dependencies {
 #### Maven
 
 ```xml
-<repositories>
-  <repository>
-    <id>jcenter</id>
-    <url>https://jcenter.bintray.com</url>
-  </repository>
-</repositories>
-
 <dependencies>
   <dependency>
     <groupId>io.github.ykayacan.hashing</groupId>
@@ -67,16 +59,16 @@ dependencies {
 
 ### Snapshots
 
-You can access the latest snapshot by adding the repository `https://oss.jfrog.org/artifactory/oss-snapshot-local`
+You can access the latest snapshot by adding the repository `https://oss.sonatype.org/content/repositories/snapshots` 
 to your build.
 
-Snapshots of the development version are available in [Jfrog's snapshots repository](https://oss.jfrog.org/list/oss-snapshot-local/io/github/ykayacan/hashing).
+Snapshots of the development version are available in [Sonatype's snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/io/github/ykayacan/hashing/).
 
 ## Usage <a name = "usage"></a>
 
 #### Consistent Hashing
 
-```
+```java
 NodeRouter<PhysicalNode> router = 
     ConsistentNodeRouter.create(15, MurMurHashFunction.create());
 
@@ -97,7 +89,7 @@ router.removeNode("node1");
 
 #### Rendezvous Hashing
 
-```
+```java
 NodeRouter<WeightedNode> router = RendezvousNodeRouter.create(
     MurMurHashFunction.create(), DefaultRendezvousStrategy.create());
 
